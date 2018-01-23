@@ -1,0 +1,254 @@
+\ProvidesFile{aglc.cbx}
+
+\ExecuteBibliographyOptions{dateabbrev=false,ibidtracker=strict,loccittracker=true,citetracker=true}
+
+\newcommand{\para}[1]{\StrSubstitute{[#1]}{, }{],\addspace[}[\x]\StrSubstitute{\x}{--}{]--[}}
+
+% to save the footnote number
+
+\newbibmacro*{cite:save}{%
+	\csxdef{cbx@\thefield{entrykey}}{\the\value{instcount}}%
+	\label{cbx@\the\value{instcount}}%
+}
+
+\DeclareListFormat{last}{\ifthenelse{\value{listcount}=1}{#1}{}}
+\DeclareNameFormat{surname}{\ifthenelse{\value{listcount}=1}{#1}{}}
+\DeclareNameFormat{firstname}{\ifthenelse{\value{listcount}=1}{#1}{}}
+
+% for surnames
+
+\newbibmacro{author/editor:surname}{%
+  \ifthenelse{\ifuseauthor\AND\NOT\ifnameundef{author}}%
+    {\ifuseauthor{\printnames[surname]{author}}{}}%
+    {\ifthenelse{\ifuseeditor\AND\NOT\ifnameundef{editor}}{\printnames[surname]{editor}}{}}}
+
+% for reported cases with a venue
+
+\newbibmacro{venue}{%
+	\ifthenelse{
+		\ifentrytype{case-gen-volume} \or%
+		\ifentrytype{case-gen-year} \or%
+		\ifentrytype{case-intl-volume} \or%
+		\ifentrytype{case-intl-year} \or%
+		\ifentrytype{case-cn-reported} \or%
+		\ifentrytype{case-scot-year}}{
+		\iffieldundef{venue}{}{\addspace(\printfield{venue})}}{%
+			\ifentrytype{case-us-reported}{\addspace(\printfield{venue}\addcomma\addspace\printfield{year}){}}}}
+
+
+
+\DeclareFieldFormat{prenote}{#1\addspace}
+
+\DeclareFieldFormat{postnote}{%
+	\ifciteibid{%
+		\ifloccit{}{%
+			\addspace#1}}{%
+		\ifthenelse{%
+			\ifentrytype{case-gen-volume} \or%
+			\ifentrytype{case-gen-year} \or%
+			\ifentrytype{case-submission} \or%
+			\ifentrytype{gazette} \or%
+			\ifentrytype{govt-order} \or%
+			\ifentrytype{pracnote} \or%
+			\ifentrytype{pracnote-volume} \or%
+			\ifentrytype{pracnote-year} \or%
+			\ifentrytype{article-volume} \or%
+			\ifentrytype{article-year} \or%
+			\ifentrytype{chapter} \or%
+			\ifentrytype{hansard} \or%
+			\ifentrytype{digest} \or%
+			\ifentrytype{parl-comm-evidence} \or%
+			\ifentrytype{debate} \or%
+			\ifentrytype{submission} \or%
+			\ifentrytype{newspaper} \or%
+			\ifentrytype{case-icj-reported} \or%
+			\ifentrytype{case-pcij-reported} \or%
+			\ifentrytype{icj-pleading-reported} \or%
+			\ifentrytype{pcij-pleading-reported} \or%
+			\ifentrytype{icj-pleading-unreported} \or%
+			\ifentrytype{case-intl-volume} \or%
+			\ifentrytype{case-intl-year} \or%
+			\ifentrytype{act-ca} \or%
+			\ifentrytype{case-cn-reported} \or%
+			\ifentrytype{case-cn-unreported} \or%
+			\ifentrytype{case-fr-cass} \or%
+			\ifentrytype{case-fr-con} \or%
+			\ifentrytype{case-fr-gen} \or%
+			\ifentrytype{act-fr-individual} \or%
+			\ifentrytype{case-de} \or%
+			\ifentrytype{act-de-individual} \or%
+			\ifentrytype{act-hk-chapter} \or%
+			\ifentrytype{case-nz-maori} \or%
+			\ifentrytype{act-nz-rule} \or%
+			\ifentrytype{case-scot-year} \or%
+			\ifentrytype{act-uk-new} \or%
+			\ifentrytype{act-uk-old} \or%
+			\ifentrytype{act-uk-rule} \or%
+			\ifentrytype{case-us-reported}}{%
+				\addcomma\addspace#1}{%
+				\addspace#1}}}%
+				
+\DeclareFieldFormat[act-cn]{postnote}{%
+	\ifciteibid{%
+		\ifloccit{}{%
+			\addspace#1}}{%
+		\iffieldundef{year}{%
+			\addspace#1}{
+			\addcomma\addspace#1}}}%
+		
+\DeclareFieldFormat[arbitration]{postnote}{%
+	\ifciteibid{%
+		\ifloccit{}{%
+			\addspace#1}}{
+		\iffieldundef{title}{%
+			\addcomma\addspace#1}{%
+			\addspace#1}}}%
+		
+\DeclareFieldFormat[article-volume,article-year]{postnote}{%
+	\ifciteibid{%
+		\ifloccit{}{%
+			\addspace#1}}{%
+		\iffieldundef{url}{%
+			\iffieldundef{pages}{%
+				\addspace#1}{
+				\addcomma\addspace#1}}{%
+				\addcomma\addspace#1\addspace\printfield{url}}}}%
+			
+\DeclareFieldFormat[book]{postnote}{%
+	\ifciteibid{%
+		\ifloccit{}{%
+			\addspace#1}}{%
+		\iffieldundef{volume}{%
+			\addspace#1}{%
+			\addcomma\addspace#1}}}%
+		
+\DeclareFieldFormat[translated-book]{postnote}{%
+	\ifciteibid{%
+		\ifloccit{}{%
+			\addspace#1}}{%
+		\addspace#1\addspace%
+		\printtext{[trans of:}%
+		\addspace%
+		\printfield{origtitle}%
+		\addspace\printtext{(}%
+		\iffieldundef{edition}{%
+			\printtext{first published}\addspace\printfield{origyear}}{%
+			\printfield{edition}\printtext{ed}\addcomma\addspace\printfield{origyear}}%
+		\printtext{)]}}}%
+
+\DeclareFieldFormat[transcript,pressrelease,workingpaper,thesis,conference,speech,interview]{postnote}{%
+	\ifciteseen{
+		\ifciteibid{%
+			\ifloccit{}{%
+				\addspace#1}}{\addspace#1}}{%
+		\addspace#1}}%
+	
+\DeclareFieldFormat[correspondence]{postnote}{%
+	\ifciteibid{%
+		\ifloccit{}{%
+			\addspace#1}}{%
+		\addcomma\addspace#1\printfield{url}}}%
+	
+\DeclareFieldFormat[online]{postnote}{%
+	\iffieldundef{year}{%
+		\addcomma\addspace#1}{%
+		\iflistundef{organization}{%
+			\addspace#1}{%
+			\addcomma\addspace#1}}%
+	\printfield{url}}
+	
+\DeclareCiteCommand{\cite}[\mkbibfootnote]{}{%
+	\printfield{prenote}%
+	\ifciteibid{%
+		Ibid\addspace\printfield{postnote}}{%
+		\ifciteseen{%
+			\ifthenelse{%
+				\ifentrytype{case-gen-volume} \or%
+				\ifentrytype{case-gen-year} \or%
+				\ifentrytype{case-gen-mnc} \or%
+				\ifentrytype{case-gen-unreported} \or%
+				\ifentrytype{case-transcript} \or%
+				\ifentrytype{case-transcript-hca} \or%
+				\ifentrytype{arbitration} \or%
+				\ifentrytype{case-submission} \or%
+				\ifentrytype{act-gen} \or%
+				\ifentrytype{gazette} \or%
+				\ifentrytype{govt-order} \or%
+				\ifentrytype{non-govt-order} \or%
+				\ifentrytype{pracnote} \or%
+				\ifentrytype{pracnote-volume} \or%
+				\ifentrytype{pracnote-year} \or%
+				\ifentrytype{bill-gen} \or%
+				\ifentrytype{bill-gen-exp} \or%
+				\ifentrytype{hansard} \or%
+				\ifentrytype{parl-comm-evidence} \or%
+				\ifentrytype{debate} \or%
+				\ifentrytype{interview} \or%
+				\ifentrytype{correspondence}
+				\ifentrytype{treaty-volume} \or%
+				\ifentrytype{treaty-year} \or%
+				\ifentrytype{treaty-number} \or%
+				\ifentrytype{rulesofcourt} \or%
+				\ifentrytype{case-icj-reported} \or%
+				\ifentrytype{case-pcij-reported} \or%
+				\ifentrytype{icj-pleading-reported} \or%
+				\ifentrytype{pcij-pleading-reported} \or%
+				\ifentrytype{icj-pleading-unreported} \or%
+				\ifentrytype{case-intl-volume} \or%
+				\ifentrytype{case-intl-year} \or%
+				\ifentrytype{case-intl-unreported} \or% 
+				\ifentrytype{act-ca} \or%
+				\ifentrytype{case-cn-reported} \or%
+				\ifentrytype{case-cn-unreported} \or%
+				\ifentrytype{act-cn} \or%
+				\ifentrytype{case-fr-cass} \or%
+				\ifentrytype{case-fr-con} \or%
+				\ifentrytype{case-fr-detat} \or%
+				\ifentrytype{case-fr-gen} \or%
+				\ifentrytype{act-fr-individual} \or%
+				\ifentrytype{case-de} \or%
+				\ifentrytype{act-de-individual} \or%
+				\ifentrytype{act-hk-chapter} \or%
+				\ifentrytype{case-nz-maori} \or%
+				\ifentrytype{case-nz-waitangi} \or%
+				\ifentrytype{act-nz-rule} \or%
+				\ifentrytype{act-sg-chapter} \or%
+				\ifentrytype{case-scot-year} \or%
+				\ifentrytype{act-uk-new} \or%
+				\ifentrytype{act-uk-old} \or%
+				\ifentrytype{act-uk-rule} \or%
+				\ifentrytype{case-us-reported} \or %
+				\ifentrytype{case-us-unreported}}{%
+				\usedriver{}{\thefield{entrytype}}\printfield{postnote}\usebibmacro{venue}}{%
+				\usebibmacro{author/editor:surname}\addcomma\addspace{above n}\addspace\ref{cbx@\csuse{cbx@\thefield{entrykey}}}\iffieldundef{postnote}{}{\ifloccit{\ifciteibid{}{\addcomma}}{\addcomma}\printfield{postnote}}}}{%
+			\usebibmacro{cite:save}%
+			\usedriver{}{\thefield{entrytype}}\printfield{postnote}\usebibmacro{venue}}}}%
+{}{}%
+					
+
+
+\DeclareCiteCommand{\textcite}{\citetrackerfalse}{%
+	\usedriver{}{\thefield{entrytype}}%
+	\printfield{postnote}}{}{}%
+
+\DeclareMultiCiteCommand{\cites}[\mkbibfootnote]{\cite}{\multicitedelim}
+
+\DeclareMultiCiteCommand{\quoting}[\mkbibfootnote]{\cite}{, quoting }
+\DeclareMultiCiteCommand{\quotedin}[\mkbibfootnote]{\cite}{, quoted in }
+\DeclareMultiCiteCommand{\citing}[\mkbibfootnote]{\cite}{, citing }
+\DeclareMultiCiteCommand{\citedin}[\mkbibfootnote]{\cite}{, cited in }
+
+\DeclareMultiCiteCommand{\affirmed}[\mkbibfootnote]{\cite}{, affd}
+\DeclareMultiCiteCommand{\reversed}[\mkbibfootnote]{\cite}{, revd}
+
+\DeclareMultiCiteCommand{\reportedin}[mkbibfootnote]{\cite}{ reported in }
+
+\DeclareMultiCiteCommand{\asamendedby}[\mkbibfootnote]{\cite}{, as amended by }
+\DeclareMultiCiteCommand{\lateramendedby}[\mkbibfootnote]{\cite}{, later amended by }
+\DeclareMultiCiteCommand{\amending}[\mkbibfootnote]{\cite}{, amending }
+\DeclareMultiCiteCommand{\asrepealedby}[\mkbibfootnote]{\cite}{, as repealed by }
+\DeclareMultiCiteCommand{\repealing}[\mkbibfootnote]{\cite}{, repealing }
+\DeclareMultiCiteCommand{\asinsertedby}[\mkbibfootnote]{\cite}{, as inserted by }
+\DeclareMultiCiteCommand{\inserting}[\mkbibfootnote]{\cite}{, inserting }
+
+\endinput

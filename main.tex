@@ -1,49 +1,55 @@
 % !TEX TS-program = xelatex
 
 \documentclass[a4paper,11pt]{article}
-
+  \usepackage[backend=biber,style=aglcv3]{biblatex}
+    \bibliography{references}
   \usepackage{setspace}
+  \usepackage{parskip}
+    \setlength{\parskip}{16pt}
   \usepackage{graphicx}
   \usepackage{titlesec}
   \usepackage[margin=1.25in]{geometry}
   \usepackage[australian]{babel}
-  \usepackage{parskip}
-    \setlength{\parskip}{16pt}
   \usepackage{framed}
   \usepackage{enumerate}
+  %\usepackage{enumitem}
   \usepackage{fontspec}
-    \defaultfontfeatures{WordSpace=2,Mapping=tex-text}
+    \defaultfontfeatures{WordSpace=1.2,Mapping=tex-text}
     \setmainfont[]{Open Sans}
-  \usepackage[hyphens]{url}
-    \urlstyle{same}
-  \usepackage{mdwlist}
   \usepackage{hyperref}
-    \hypersetup{
-      unicode=true,
-      pdftoolbar=true,
-      pdfmenubar=true,
-      pdffitwindow=true,
-      pdfstartview={FitH},
-      pdftitle={Short title},
-      pdfauthor={Pirate Party Australia},
-      pdfnewwindow=true,
-      colorlinks=true,
-      linkcolor=black,
-      citecolor=black,
-      filecolor=black,
-      urlcolor=black
-      }
-	\usepackage{draftwatermark}
+  \usepackage{draftwatermark}
 
 \titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
 \titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
 \titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
 
 \setcounter{secnumdepth}{5}
+\newcounter{Recommendations}
 
+\newcommand{\recommendation}[1]
+{\stepcounter{Recommendations}\textbf{Recommendation \theRecommendations:} #1}
+
+\setlength{\footnotesep}{1em}
 \interfootnotelinepenalty=10000
 
-\title{Full title}
+\makeatletter
+\title{Submission to the \textit{... Committee ...} inquiry into the \textit{... Subject ...}}
+  \let\Title\@title
+\author{Pirate Party Australia}
+
+\hypersetup{
+  pdftitle={\@author},
+  pdfauthor={\@author},
+  pdfsubject={\@title},
+  pdfcreator={},
+  pdfproducer={},
+  pdfkeywords={},
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  filecolor=black,
+  urlcolor=black
+}
 
 \begin{document}
 
@@ -58,30 +64,26 @@
 \vspace{1in}
 
 \huge{%
-\textbf{%
-Submission Template} 
-} 
+  \Title
+}
 
 \vfill
 
 \onehalfspacing
 
 \large{%
-  Sollicitudin Fermentum
-  (\href{mailto:sollicitudin.fermentum@pirateparty.org.au}%
-  {sollicitudin.fermentum@pirateparty.org.au})\\
-  %
-  Ligula Magna
-  (\href{mailto:ligula.magna@pirateparty.org.au}%
-  {ligula.magna@pirateparty.org.au})\\
-  %
-  Vestibulum Nibh
-  (\href{mailto:vestibulum.nibh@pirateparty.org.au}%
-  {vestibulum.nibh@pirateparty.org.au})
+  Jane Smith
+  (\href{mailto:jane.smith@pirateparty.org.au}
+  {jane.smith@pirateparty.org.au})\\
 
-\vspace{0.5in}       
+  John Doe
+  (\href{mailto:john.doe@pirateparty.org.au}
+  {john.doe@pirateparty.org.au})\\
 
-\today
+  \vspace{0.5in}
+
+  \today
+  %1 January 2018
 }
 
 \vfill
@@ -90,27 +92,51 @@ Submission Template}
 
 \end{center}
 
-\newpage
-
 \restoregeometry
 
+% comment out below for small submissions
+\newpage
 \onehalfspacing
-
 \tableofcontents
 
 \newpage
 
-\section{Egestas Pellentesque Ligula Tortor Ridiculus}
+\section{Introduction}
 
-Aenean lacinia bibendum nulla sed consectetur. Vestibulum id ligula porta felis euismod semper. Vestibulum id ligula porta felis euismod semper. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+Pirate Party Australia would like to thank the ... Committee ... for the opportunity to ...
 
-\subsection{Risus Parturient Cursus Adipiscing Fusce}
+\subsection{About Pirate Party Australia}
 
-Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras mattis consectetur purus sit amet fermentum. Maecenas faucibus mollis interdum. Vestibulum id ligula porta felis euismod semper.
+Pirate Party Australia is a political party based around the core tenets of freedom of information and culture, civil and digital liberties, privacy and anonymity, government transparency, and participatory democracy. It formed in 2008, and is part of an international movement that began in Sweden in 2006. Pirate Parties have been elected to all levels of government worldwide.
 
-\subsubsection{Sit Ridiculus Fringilla Sollicitudin Egestas}
+\section{Example section}\label{sec:examplesec}
 
-Nullam quis risus eget urna mollis ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Curabitur blandit tempus porttitor. Maecenas faucibus mollis interdum.
+Section intro\footnote{Basic footnote.}
+
+\subsection{A sub section}
+
+Here is the subsection text
+
+\vspace{1em}
+\begin{framed}
+\recommendation{Abandon the thing you are proposing to do and listen to the experts.}
+\end{framed}
+
+In Section \ref{sec:examplesec} we discuss the ***.
+
+In Section \ref{sec:examplesec} we point out that ***
+
+\section{Example section two}\label{sec:examplesectwo}
+
+Section two intro
+
+\subsection{A subsection title}
+
+More test\cite{alrc}
+
+\subsubsection{A subsubsection title}
+
+Lots more text\cite{ea1918cth}.
 
 \paragraph{Parturient Mattis Cras Condimentum Tristique}
 
@@ -120,6 +146,9 @@ Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
 
 Nullam id dolor id nibh ultricies vehicula ut id elit. Aenean lacinia bibendum nulla sed consectetur. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
 
-
+\vspace{1em}
+\begin{framed}
+\recommendation{example recommendation.}
+\end{framed}
 
 \end{document}
